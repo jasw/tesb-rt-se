@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.talend.cxf-examples.jaxrs-oauth-example</groupId>
     <artifactId>jaxrs-oauth2-service</artifactId>
-    <name>OAuth JAX-RS Example REST Service</name>
+    <name>OAuth2 JAX-RS Example REST Service</name>
     <packaging>bundle</packaging>
 
     <parent>

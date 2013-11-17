@@ -95,7 +95,7 @@ public final class RESTClient {
     	OAuthAuthorizationData data = authorizeClient.get(OAuthAuthorizationData.class);    	
     	Object authenticityCookie = authorizeClient.getResponse().getMetadata().getFirst("Set-Cookie");
     	    	
-    	Form authorizationResult = getAuthorizationResult(data);
+    	Form authorizationResult = getAuthorizationResult(data);   //user clicked on "allow" authorization
     	authorizeClient.reset();
     	authorizeClient.to(data.getReplyTo(), false);
     	if (authenticityCookie != null) {

@@ -22,7 +22,8 @@
      <bean id="thirdPartyAccessService" class="oauth2.manager.ThirdPartyAccessService">
          <property name="accounts" ref="userAccounts"/>
      </bean>
-     
+
+    <!--use this filter to protect all the APIs that need token.-->
      <bean id="oAuthFilter" class="org.apache.cxf.rs.security.oauth2.filters.OAuthRequestFilter">
          <property name="dataProvider" ref="oauthProvider"/>
      </bean>

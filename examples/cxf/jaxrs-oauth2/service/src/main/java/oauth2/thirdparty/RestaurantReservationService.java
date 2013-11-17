@@ -113,7 +113,7 @@ public class RestaurantReservationService {
         String message = ERROR_DESCRIPTIONS.get(errorCode);
         return new ReservationFailure(message);
     }
-    
+    //will be redirected to reservationConfirm.jsp, as configured in restaurantReserve.xml
 	@GET
 	@Path("complete")
 	@Produces({"text/html", "application/xml;q=0.9" })
@@ -187,7 +187,7 @@ public class RestaurantReservationService {
 	    URI handlerUri = getBaseUriBuilder().path("failure").queryParam("code", code).build();
 	    return Response.seeOther(handlerUri).build();
 	}
-	
+
 	@POST
 	@Path("table")
     public Response reserveTable(@FormParam("name") String name,

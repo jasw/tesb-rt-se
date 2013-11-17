@@ -36,11 +36,14 @@ public class OAuthManager implements AuthorizationCodeDataProvider {
 	public void registerClient(Client c) {
 	    this.client = c;
 	}
+    @Override
 	public Client getClient(String clientId) throws OAuthServiceException {
 		return client == null || !client.getClientId().equals(clientId) ? null : client;
 	}
 
-	// grant management
+    @Override
+
+    // grant management
 	public ServerAuthorizationCodeGrant createCodeGrant(
 			AuthorizationCodeRegistration reg) throws OAuthServiceException {
 		grant = new ServerAuthorizationCodeGrant(client, 3600L);
@@ -52,7 +55,9 @@ public class OAuthManager implements AuthorizationCodeDataProvider {
 		return grant;
 	}
 
-	public ServerAuthorizationCodeGrant removeCodeGrant(String code)
+    @Override
+
+    public ServerAuthorizationCodeGrant removeCodeGrant(String code)
 			throws OAuthServiceException {
 		ServerAuthorizationCodeGrant theGrant = null;
 		if (grant.getCode().equals(code)) {
@@ -61,8 +66,10 @@ public class OAuthManager implements AuthorizationCodeDataProvider {
 		}
 		return theGrant;
 	}
-	
-	// token management
+
+    @Override
+
+    // token management
 	public ServerAccessToken createAccessToken(AccessTokenRegistration reg)
 		throws OAuthServiceException {
 		ServerAccessToken token = new BearerAccessToken(reg.getClient(), 3600L);
@@ -77,26 +84,36 @@ public class OAuthManager implements AuthorizationCodeDataProvider {
 		
 		return token;
 	}
-	
-	public ServerAccessToken getAccessToken(String tokenId) throws OAuthServiceException {
+
+    @Override
+
+    public ServerAccessToken getAccessToken(String tokenId) throws OAuthServiceException {
 		return at == null || !at.getTokenKey().equals(tokenId) ? null : at;
 	}
-	
-	public void removeAccessToken(ServerAccessToken token) throws OAuthServiceException {
+
+    @Override
+
+    public void removeAccessToken(ServerAccessToken token) throws OAuthServiceException {
 	    at = null;
 	}
-	
-	public ServerAccessToken refreshAccessToken(Client clientId, String refreshToken, List<String> scopes)
+
+    @Override
+
+    public ServerAccessToken refreshAccessToken(Client clientId, String refreshToken, List<String> scopes)
 			throws OAuthServiceException {
 		throw new UnsupportedOperationException();
 	}
 
-	public ServerAccessToken getPreauthorizedToken(Client client, List<String> scopes,
+    @Override
+
+    public ServerAccessToken getPreauthorizedToken(Client client, List<String> scopes,
 	    UserSubject subject, String grantType) throws OAuthServiceException {
 		return null;
 	}
 
-	// permissions
+    @Override
+
+    // permissions
 	public List<OAuthPermission> convertScopeToPermissions(Client client, List<String> scopes) {
 		List<OAuthPermission> list = new ArrayList<OAuthPermission>();
 		for (String scope : scopes) {
