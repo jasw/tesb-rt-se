@@ -16,6 +16,7 @@ import org.apache.cxf.rs.security.oauth2.common.UserSubject;
 import org.apache.cxf.rs.security.oauth2.grants.code.AuthorizationCodeDataProvider;
 import org.apache.cxf.rs.security.oauth2.grants.code.AuthorizationCodeRegistration;
 import org.apache.cxf.rs.security.oauth2.grants.code.ServerAuthorizationCodeGrant;
+import org.apache.cxf.rs.security.oauth2.provider.OAuthDataProvider;
 import org.apache.cxf.rs.security.oauth2.provider.OAuthServiceException;
 import org.apache.cxf.rs.security.oauth2.tokens.bearer.BearerAccessToken;
 
@@ -41,7 +42,6 @@ public class OAuthManager implements AuthorizationCodeDataProvider {
 		return client == null || !client.getClientId().equals(clientId) ? null : client;
 	}
 
-    @Override
 
     // grant management
 	public ServerAuthorizationCodeGrant createCodeGrant(
@@ -55,7 +55,6 @@ public class OAuthManager implements AuthorizationCodeDataProvider {
 		return grant;
 	}
 
-    @Override
 
     public ServerAuthorizationCodeGrant removeCodeGrant(String code)
 			throws OAuthServiceException {

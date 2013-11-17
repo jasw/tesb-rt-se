@@ -60,7 +60,7 @@ public final class RESTClient {
     	WebClient.getConfig(rs).getHttpConduit().getClient().setReceiveTimeout(10000000L);
     	rs.form(new Form().set("user", "barry@social.com").set("password", "1234"));
     	
-    	printUserCalendar();
+    	//printUserCalendar();
     }
     
     private void printUserCalendar() {
@@ -148,9 +148,12 @@ public final class RESTClient {
     public static void main(String[] args) throws Exception {
 
         RESTClient client = new RESTClient();
+
         client.registerClientApplication();
         client.createUserAccount();
-        client.reserveTable();
+        //registration steps are done now.
+        //client.
+        //client.reserveTable();
     }
 
     private static int getPort() {

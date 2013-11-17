@@ -48,6 +48,6 @@ public class SocialService {
 	@GET
 	public UserAccount getAccount() {
 		String userName = context.getUserPrincipal().getName();
-		return accounts.getAccount(userName);
+		return accounts.getAccount(userName); //return account will cause dispather to redirect to userAccount.jsp as configured in socialApp.xml
 	}
 }
