@@ -1,0 +1,38 @@
+Registration -- should happen oob
+
+	1. Register client API 
+		/services/oauth/registerProvider
+			set redirect url to /services/reservations/reserve/complete
+	2. Register User at the site
+		/services/register/registerUser
+			barry@social.com 1234
+
+Flow start
+	
+	3. Read calender: 
+		a. (web)
+		/services/social/accounts/calendar
+		
+		Exposed by SocialService class, which is protected by SocialSecurityContext -- only need basic auth, as defined in socialApp.xml.
+
+		b. (webservice)
+		Get /services/thirdPartyAccess/calendar
+			is exposed by "ThirdPartyAccessService" class, which will be protected by OAuthRequestFilter -- no access token, no access. see thirdPartyToSocialApp.xml for cxf configuration.
+
+
+	4. Reserve table:
+		
+		/services/reservations/reserve/table 
+		exposed by RestaurantReservationService class
+
+		This service will persist the reserve request and then
+		will redirect to authorization service:
+
+		/services/social/authorize with redirectUrl = 
+				"/services/reservations/reserve/complete"
+
+	5. Get token
+		/services/social/authorize/ 
+		
+
+		

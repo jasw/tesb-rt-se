@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Client Application Registration Form</title>
+    <STYLE TYPE="text/css">
+	<!--
+	  input {font-family:verdana, arial, helvetica, sans-serif;font-size:20px;line-height:40px;}
+	  H1 { text-align: center}
+	  div.padded {  
+         padding-left: 5em;  
+      }   
+	-->
+</STYLE>
+</head>
+<body>
+<H1>Login</H1>
+<br/>
+     <form action="/poc/login/get"
+           enctype="multipart/form-data" 
+           method="POST">
+
+         Name:
+              <input type="text" name="username" size="50" value="barry@social.com"/>
+              <input type="text" name="password" size="50" value="1234"/>
+
+              <input type="text" size="50" name="appRedirectURI" value="http://localhost:8080/poc/tokenReceiver"/>
+
+                <input type="submit" value="login"/>
+
+  </form>
+ 
+  
+</body>
+</html>
