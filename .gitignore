@@ -18,3 +18,5 @@ derby.log
 
 # IntelliJ IDEA
 *.i??
+.idea
+
