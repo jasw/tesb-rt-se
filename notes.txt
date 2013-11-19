@@ -31,8 +31,81 @@ Flow start
 		/services/social/authorize with redirectUrl = 
 				"/services/reservations/reserve/complete"
 
+
+	startAuthorization will generate the OauthData -- RedirectionBasedGrantService class
+	 /**
+         * Handles the initial authorization request by preparing
+         * the authorization challenge data and returning it to the user.
+         * Typically the data are expected to be presented in the HTML form
+         * @return the authorization data
+         */
+
+         So implicitGrantService will expose /authorize-implicit, the "get" method(defined in its parent) will
+          return the OAuthAuthorizationData, which will then cause the dispatcher to redirect to the oAuthAutorize.jsp page.
+
+          in the jsp page, when user clicks allow, the post will invoke the /authorize-implicit/decision as defined in
+           its parent "redirectionBasedGrantService", as the form's url will be /decision.
+
+Found a bug: if have multiple scope, the url will have space in between, effectively broken the flow.
+
+ImplicitGrantService.createGrant, will add # in front of the state, forgot to add ? in front of the first query and add space
+in if there are two values. Look at the oauth2 spec defined here: http://tools.ietf.org/html/rfc6749#section-4.2.2
+
+http://example.com/cb#access_token=2YotnFZFEjr1zCsicMWpAA
+               &state=xyz&token_type=example&expires_in=3600
+
+
+              The # should be in front of the token, as you do want the token to be dropped by browser redirect.
+
 	5. Get token
+
+
 		/services/social/authorize/ 
-		
+
+
+
+		----------------------------------------------------------------------------------------------------------------
 
 		
+        ResourceOwner flow
+
+        1. Use AccessTokenService == "/token" configure it to be:
+
+                     <property name="dataProvider" ref="oauthProvider"/>
+                     <property name="grantHandler" ref="resourceOwnerGrantHandler"/>
+                     <property name="CanSupportPublicClients" value="true"/>
+
+        dataProvider will create the token, and given token ID, retrieve the token back.
+
+        the GrantHandler will call the loginHandler to get the subject (contains ID,roles,login, etc), call the
+          dataProvider to retrieve the token given tokenID.
+
+          So GrantHandler -call-> LoginHander to get subject
+           GrantHandler -call-> dataProvider with subject wrapped to AccessTokenRegistration to get token.
+
+
+            LoginHander does the actual authentication&authoriazation.
+
+          <bean id="resourceOwnerGrantHandler"
+                  class="org.apache.cxf.rs.security.oauth2.grants.owner.ResourceOwnerGrantHandler">
+
+                <property name="canSupportPublicClients" value="true"/>
+                <property name="dataProvider" value="oauthProvider" />
+                <property name="loginHandler" ref="myLoginHandler" />
+            </bean>
+
+
+            <bean id="myLoginHandler" class="oauth2.poc.MyLoginHandler"/>
+
+        2. this thing requires input in the form:
+        OAuthConstants.GRANT_TYPE = OAuthConstants.RESOURCE_OWNER_GRANT
+        OAuthConstants.RESOURCE_OWNER_NAME
+        and OAuthConstants.RESOURCE_OWNER_PASSWORD
+
+        3. Use OAuthRequestFilter with the dataProvider of your own to protect all the other webservices.
+        That filter will use the provider to load the token back given ID and then call tokenValidator to validate the token
+        (expired etc).
+
+        4. Enhancement request: LoginHander cannot report back any error, GrantHandler will catch all exceptions and return the same oauthServiceException.
+        Customer Error only supports oauthDataProvider.createToken. If that method throws oAuthServiceException(with customerError) ,that error will become the output.
+

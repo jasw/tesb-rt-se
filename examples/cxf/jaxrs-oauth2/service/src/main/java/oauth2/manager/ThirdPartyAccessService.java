@@ -3,6 +3,7 @@
  */
 package oauth2.manager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
@@ -13,6 +14,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 
 import oauth2.common.Calendar;
+import oauth2.common.CalendarEntry;
 import oauth2.common.OAuthConstants;
 import oauth2.service.UserAccount;
 import oauth2.service.UserAccounts;
@@ -41,7 +43,8 @@ public class ThirdPartyAccessService {
 	    if (account == null) {
 	    	account = accounts.getAccountWithAlias(userName);
 	    }
-		return account.getCalendar();
+        Calendar calendar = new Calendar();
+		return calendar;
 	}
 	
 	@POST

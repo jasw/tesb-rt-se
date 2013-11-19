@@ -32,6 +32,7 @@
           delegates to the OAuth provider to keep them  -->
      <bean id="accessTokenService" class="org.apache.cxf.rs.security.oauth.services.AccessTokenService">
          <property name="dataProvider" ref="oauthProvider"/>
+         <property name="writeCustomErrors" value="true"/>
      </bean>
 
      <!-- OAuthManager View Support.

@@ -21,11 +21,24 @@
      <bean id="thirdPartyRegService" class="oauth2.manager.ThirdPartyRegistrationService">
          <property name="dataProvider" ref="oauthProvider"/>
      </bean>
-     
-     <!-- Manages the creation of access tokens, 
-          delegates to the OAuth provider to keep them  -->
+
+
+    <bean id="myLoginHandler" class="oauth2.poc.MyLoginHandler"/>
+
+    <bean id="resourceOwnerGrantHandler"
+          class="org.apache.cxf.rs.security.oauth2.grants.owner.ResourceOwnerGrantHandler">
+
+        <property name="canSupportPublicClients" value="true"/>
+        <property name="dataProvider" ref="oauthProvider" />
+        <property name="loginHandler" ref="myLoginHandler" />
+    </bean>
+
+    <!-- Manages the creation of access tokens,
+         delegates to the OAuth provider to keep them  -->
      <bean id="accessTokenService" class="org.apache.cxf.rs.security.oauth2.services.AccessTokenService">
          <property name="dataProvider" ref="oauthProvider"/>
+         <property name="grantHandler" ref="resourceOwnerGrantHandler"/>
+         <property name="CanSupportPublicClients" value="true"/>
      </bean>
      
      <bean id="jsonProvider" class="org.apache.cxf.rs.security.oauth2.provider.OAuthJSONProvider"/>
@@ -43,7 +56,7 @@
          <property name="logRedirects" value="true"/>
      </bean>
 
-     <!-- OAuthManager service endpoint, consists of 2 JAX-RS root resources --> 
+    <!-- OAuthManager service endpoint, consists of 2 JAX-RS root resources -->
      <jaxrs:server id="oauthServer" address="/oauth">
         <jaxrs:serviceBeans>
            <ref bean="thirdPartyRegService"/>

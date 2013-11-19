@@ -65,7 +65,7 @@
      
      <bean id="oauthClient" class="oauth2.thirdparty.OAuthClientManager">
          <!--changed to use implicit-->
-         <property name="authorizationURI" value="http://localhost:${http.port}/services/social/authorize"/>
+         <property name="authorizationURI" value="http://localhost:${http.port}/services/social/authorize-implicit"/>
          <property name="accessTokenService" ref="atServiceClient"/>
      </bean>
      

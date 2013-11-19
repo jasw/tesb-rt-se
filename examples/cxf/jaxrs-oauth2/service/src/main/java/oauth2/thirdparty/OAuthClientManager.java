@@ -14,6 +14,8 @@ import org.apache.cxf.rs.security.oauth2.common.ClientAccessToken;
 import org.apache.cxf.rs.security.oauth2.grants.code.AuthorizationCodeGrant;
 import org.apache.cxf.rs.security.oauth2.provider.OAuthServiceException;
 
+import javax.ws.rs.core.UriBuilder;
+
 public class OAuthClientManager {
 
 	private static final String DEFAULT_CLIENT_ID = "123456789";
@@ -31,11 +33,25 @@ public class OAuthClientManager {
 			                              URI redirectUri,
 			                              String reservationRequestKey) {
 		String scope = OAuthConstants.UPDATE_CALENDAR_SCOPE + request.getHour();
-	    return OAuthClientUtils.getAuthorizationURI(authorizationServiceURI, 
-	    		                                    consumer.getKey(),
-	    		                                    redirectUri.toString(),
-	    		                                    reservationRequestKey,
-	    		                                    scope);
+        String clientId = consumer.getKey();
+        String state = reservationRequestKey;
+        UriBuilder ub = UriBuilder.fromUri(authorizationServiceURI);
+        if (clientId != null) {
+            ub.queryParam(org.apache.cxf.rs.security.oauth2.utils.OAuthConstants.CLIENT_ID, clientId);
+        }
+        if (scope != null) {
+            ub.queryParam(org.apache.cxf.rs.security.oauth2.utils.OAuthConstants.SCOPE, scope);
+        }
+        ub.queryParam(org.apache.cxf.rs.security.oauth2.utils.OAuthConstants.RESPONSE_TYPE, org.apache.cxf.rs.security.oauth2.utils.OAuthConstants.TOKEN_RESPONSE_TYPE);
+
+        if (redirectUri != null) {
+            ub.queryParam(org.apache.cxf.rs.security.oauth2.utils.OAuthConstants.REDIRECT_URI, redirectUri);
+        }
+        if (state != null) {
+            ub.queryParam(org.apache.cxf.rs.security.oauth2.utils.OAuthConstants.STATE, state);
+        }
+
+	   return ub.build();
 	}
 	public ClientAccessToken getAccessToken(AuthorizationCodeGrant codeGrant) {
 	    try {

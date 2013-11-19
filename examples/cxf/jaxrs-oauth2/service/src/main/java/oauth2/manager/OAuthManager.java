@@ -39,7 +39,11 @@ public class OAuthManager implements AuthorizationCodeDataProvider {
 	}
     @Override
 	public Client getClient(String clientId) throws OAuthServiceException {
-		return client == null || !client.getClientId().equals(clientId) ? null : client;
+        //to bypass client check must have id but null secret.
+        Client client1 = new Client("public",null,false);
+
+        return client1;
+		//return client == null || !client.getClientId().equals(clientId) ? null : client;
 	}
 
 
@@ -80,6 +84,8 @@ public class OAuthManager implements AuthorizationCodeDataProvider {
 		token.setGrantType(reg.getGrantType());
 		
 		at = token;
+
+        //here persist token into database.
 		
 		return token;
 	}
