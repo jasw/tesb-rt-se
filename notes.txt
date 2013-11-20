@@ -106,6 +106,15 @@ http://example.com/cb#access_token=2YotnFZFEjr1zCsicMWpAA
         That filter will use the provider to load the token back given ID and then call tokenValidator to validate the token
         (expired etc).
 
-        4. Enhancement request: LoginHander cannot report back any error, GrantHandler will catch all exceptions and return the same oauthServiceException.
+        4. Enhancement request: LoginHandler cannot report back any error, GrantHandler will catch all exceptions and return the same oauthServiceException.
         Customer Error only supports oauthDataProvider.createToken. If that method throws oAuthServiceException(with customerError) ,that error will become the output.
 
+
+
+5. two phase login:
+
+1. loginService will return a token.
+2. use the token to access keepSafeQuestionService which will use the normal OAuthRequestFilter
+3. the keepSafeQuestionService will update the token so that it says fully logged-in. a flag maybe, or use the subject.roles in the security context.
+4. create a FullyLoggedinFilter which checks that flag exist.
+5. add that filter to all the other services.
